@@ -13,29 +13,29 @@ We propose Random Stacking, an extension of basic stacking that incorporates add
 ├── results/
 └── README.md
 ```
-`codes.realdata` codes for reproducing the results of real-world data application.  
-`codes.simulation` codes for reproducing the results of simulation study.  
-`data` real-world datasets used for model building.  
-`output` intermediate outputs.    
-`results` final results.
+`codes.realdata` Scripts for reproducing the results of the real-world data application.    
+`codes.simulation` Scripts for reproducing the results of the simulation study.   
+`data` Real-world datasets used for model development.    
+`output` Intermediate results and temporary outputs.      
+`results` Final processed results. 
 
 ### Files in codes.realdata
 
-`mainFunction.R` main functions to generate   
-`fit.fun.R` functions for training models  
-`random.stk_v4.R` random stacking functions (version 4)  
-`stk.cox_v6.R` basic stacking for survival predictions (version 6)  
-`stk.glm_v5.R` basic stacking for generalized models (version 5)  
-`helper.R` helper function  
-`ipflasso.R` IPFLasso  
+`mainFunction.R` Core functions for generating results  
+`fit.fun.R` Functions for training models    
+`random.stk_v4.R` Random stacking functions (version 4)   
+`stk.cox_v6.R` Basic stacking implementation for survival prediction (version 6)   
+`stk.glm_v5.R` Basic stacking implementation for generalized models (version 5)  
+`helper.R` Utility and helper functions  
+`ipflasso.R` Implementation of IPFLasso  
 
 ### Files in codes.simulation
 
-`simulation.R` main script for the simulation and result generation  
-`fit.fun.simulation.R` training models   
-`random.stk_v6.R` random stacking functions (version 6)  
-`stk.glm_v6.R` basic stacking for generalized models (version 6)  
-`baglasso.R` bagged lasso  
+`simulation.R` Main script for running simulations and generating results     
+`fit.fun.simulation.R` Functions for training models in simulations    
+`random.stk_v6.R` Random stacking functions (version 6)  
+`stk.glm_v6.R` Basic stacking for generalized models (version 6)  
+`baglasso.R` Bagged lasso  
 
 ### Reproducing the Results
 
