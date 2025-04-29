@@ -48,6 +48,8 @@ Run *simulation.R* step by step to generate the results of simulations
 R /codes.simulation/simulation.R
 ```
 
+Of note, run on R version 4.3.3. Results may be slightly different with different R version.      
+
 ### Contact
 
 Maintainer: Shuo Wang  
