@@ -3,10 +3,10 @@ source("./helper.R")
 source("./stk.glm_v5.R")
 source("./stk.cox_v6.R")
 source("./ipflasso.R")
-source(".random.stk_v4.R")
+source("./random.stk_v4.R")
 
 # load package
-pkgs <- c("survival", "dplyr", "glmnet", "doParallel", "doSNOW", "ggplot2", "tidyr", "tidyverse", "ggpubr", "WeightedROC")
+pkgs <- c("survival", "dplyr", "glmnet", "doParallel", "doSNOW", "rngtools", "ggplot2", "tidyr", "tidyverse", "ggpubr", "WeightedROC")
 loadPackages(pkgs)
 
 #-------------------------------------------------------------------------------
@@ -142,7 +142,7 @@ for(nam in datNames) {
   # 
   # X <- X[, 1:500]
   # blocks <- blocks[1:500]
-  
+  rng <- RNGseq(nfolds * nsim, 1384760)
   #- parallel runs
   nCores <- pmin(detectCores() - 2, nCores)
   cl <- makeCluster(nCores)
@@ -154,7 +154,10 @@ for(nam in datNames) {
   
   foreach(i = 1 : (nfolds * nsim), 
           .packages = c("glmnet", "survival"), 
+          seed = rng,
           .options.snow = opts) %dopar% {
+            
+            rngtools::setRNG(seed)
             
             samID <- ceiling(i / nfolds)
             #- j, which fold of the i.nsim split being the test

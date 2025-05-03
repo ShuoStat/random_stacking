@@ -8,13 +8,11 @@ source("./random.stk_v4.R")
 
 # load package
 # List of required packages
-pkgs <- c("survival", "dplyr", "glmnet", "doParallel", "doSNOW", "ggplot2", "tidyr", "tidyverse", "ggpubr", "WeightedROC")
-
+pkgs <- c("survival", "dplyr", "glmnet", "doParallel", "doSNOW", "rngtools", "ggplot2", "tidyr", "tidyverse", "ggpubr", "WeightedROC")
 loadPackages(pkgs)
 
 #-------------------------------------------------------------------------------
 #- Parameter setting
-#- 
 #-------------------------------------------------------------------------------
 
 nsim   <- 10 # number of replicaes
@@ -52,7 +50,6 @@ write.csv(clinTab, "../results/clinTab.csv")
 #-------------------------------------------------------------------------------
 #- Training models
 #-------------------------------------------------------------------------------
-
 # indicator for whether to use Inverse Probability of Censoring Weights (IPCW)
 IPCW = TRUE
 # list of modeling methods to be used
@@ -72,7 +69,7 @@ for(nam in datNames) {
 
   # X <- X[, 1:500]
   # blocks <- blocks[1:500]
-  
+  rng <- RNGseq(nfolds * nsim, 1384760)
   #- parallel runs
   nCores <- pmin(detectCores() - 2, nCores)
   cl <- makeCluster(nCores)
@@ -86,7 +83,10 @@ for(nam in datNames) {
   # parallel running
   foreach(i = 1 : (nfolds * nsim), 
           .packages = c("glmnet", "survival"), 
+          seed = rng,
           .options.snow = opts) %dopar% {
+            
+            rngtools::setRNG(seed)
             
             samID <- ceiling(i / nfolds)
             #- j, which fold of the i.nsim split being the test
@@ -204,7 +204,7 @@ predMods <- function(X.v, obj, type = "link", ifCVMods = FALSE){
 aucs <- list() # store AUC values for each dataset
 devs <- list() # store deviance values for each dataset
 briers <- list() # store Brier score values for each dataset
-IPCW = FALSE # disable IPCW, not necessary for validation
+IPCW = TRUE # disable IPCW, not necessary for validation
 
 for(nam in datNames){
   
@@ -239,14 +239,16 @@ for(nam in datNames){
                     load(paste0("../output/basic_", nam, "_", samID, "_", j, ".RData"))
                     basic <- mod
                   }
-                  
+
                   if ("stk" %in% method) {
                     load(paste0("../output/stk_", nam, "_", samID, "_", j, ".RData"))
                     stk <- mod
                   }
-                  
+
                   if ("random.stk" %in% method) {
-                    load(paste0("../output/random.stk_", nam, "_", samID, "_", j, ".RData"))
+                    # load(paste0("../output/random.stk_", nam, "_", samID, "_", j, ".RData"))
+                    # The main analysis uses all feature, no pre-tuning. 
+                    load(paste0("../output/random.stk_", nam, "_", samID, "_", j, "_P1_fast100.RData"))
                     random.stk <- mod
                   }
                   
@@ -255,7 +257,7 @@ for(nam in datNames){
                     identical(basic$clin$beta, stk$clin$beta)
                     identical(basic$clin$beta, random.stk$clin$beta)
                   }
-                  
+
                   # Weights
                   if (IPCW) {
                     
@@ -370,7 +372,7 @@ for(nam in datNames){
                   stk <- mod[-1]
                   
                   # random stacking
-                  load(paste0("../output/random.stk_", nam, "_", samID, "_", j, ".RData"))
+                  load(paste0("../output/random.stk_", nam, "_", samID, "_", j, "_P1_fast100.RData"))
                   random.stk <- mod[-1]
                   
                   stk <- c(stk, random.stk)
@@ -456,7 +458,6 @@ p <- plot.box(weights, sel = "CP") +  scale_x_discrete(labels = c("Clin", "Mol",
 ggsave("../results/random.weights.comp.tiff", plot = p, width = 7, height = 5, units = "in", dpi = 300, compression = "lzw")
 
 # pf
-
 p <- plot.box(weights, sel = "PF") + 
   scale_x_discrete(labels = c("1-1", "1-2", "1-4", "1-8", "1-1", "1-2", "1-4", "1-8")) + 
   theme(axis.text.x = element_text(angle = 90, hjust = 1))
@@ -476,7 +477,7 @@ aucs <- list()
 devs <- list()
 briers <- list()
 
-IPCW = FALSE
+IPCW = TRUE
 
 for(nam in datNames){
   
@@ -704,7 +705,7 @@ aucs <- list()
 devs <- list()
 briers <- list()
 
-IPCW = FALSE
+IPCW = TRUE
 
 for(nam in datNames){
   
@@ -831,7 +832,7 @@ ggsave(filename = paste0("../results/bootstrapSizeDev_pf.jpeg"), p, width = 12, 
 #-------------------------------------------------------------------------------
 
 tunings <- list()
-IPCW = FALSE
+IPCW = TRUE
 
 aucs <- list()
 devs <- list()
@@ -954,10 +955,10 @@ ggsave(filename = paste0("../results/fastTuningDev_pf.jpeg"), p, width = 12, hei
 
 #-------------------------------------------------------------------------------
 # Computational complexity
-# random stacking, P, 20% tuning, v6
-# random stacking, P, 100% tuning, v7
-# random stacking, 1/3P, 100% tuning v15
-# random stacking, 1/3P, 20% tuning v8
+# random stacking, P, 20% tuning, 
+# random stacking, P, 100% tuning
+# random stacking, 1/3P, 100% tuning
+# random stacking, 1/3P, 20% tuning
 # basic stacking
 # IPFLASSO
 #-------------------------------------------------------------------------------
