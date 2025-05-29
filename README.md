@@ -56,6 +56,22 @@ Maintainer: Shuo Wang
 GitHub: https://github.com/ShuoStat/  
 Email: wangsures@foxmail.com  
 
+
+### Custom License
+
+BY-NC-ND 4.0 License (c) 2025 Shuo Wang
+
+This work is provided for personal and educational use only.
+
+You may not:
+- Use this work in any form of academic publication, including but not limited to journal articles, conference papers, or theses.
+- Use this work for any commercial purposes, including but not limited to products, services, or monetized platforms.
+- Distribute modified or derivative versions of this work.
+
+All rights are reserved. 
+
+
+
 ### License
 
 CC BY-NC License © Shuo Wang 2025
