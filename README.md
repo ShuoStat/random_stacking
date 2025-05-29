@@ -58,5 +58,5 @@ Email: wangsures@foxmail.com
 
 ### License
 
-MIT License © Shuo Wang 2025
+CC BY-NC License © Shuo Wang 2025
 
