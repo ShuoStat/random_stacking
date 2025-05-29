@@ -59,7 +59,7 @@ Email: wangsures@foxmail.com
 
 ### Custom License
 
-BY-NC-ND 4.0 License (c) 2025 Shuo Wang
+BY-NC-ND 4.0 License © 2025 Shuo Wang
 
 This work is provided for personal and educational use only.
 
@@ -68,11 +68,4 @@ You may not:
 - Use this work for any commercial purposes, including but not limited to products, services, or monetized platforms.
 - Distribute modified or derivative versions of this work.
 
-All rights are reserved. 
-
-
-
-### License
-
-CC BY-NC License © Shuo Wang 2025
-
+All rights are reserved. For inquiries, contact wangsures@foxmail.com
