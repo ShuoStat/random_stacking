@@ -454,8 +454,12 @@ plot.box <- function(weights, sel = c("CP", "PF")){
 }
 
 # combination
-p <- plot.box(weights, sel = "CP") +  scale_x_discrete(labels = c("Clin", "Mol", "Clin", "Mol"))
+p <- plot.box(weights, sel = "CP") +  
+  scale_x_discrete(labels = c("Clin", "Omics", "Clin", "Omics")) +
+  theme(axis.text.x = element_text(angle = 45, hjust = 1))
+  
 ggsave("../results/random.weights.comp.tiff", plot = p, width = 7, height = 5, units = "in", dpi = 300, compression = "lzw")
+ggsave("../results/random.weights.comp.pdf", plot = p, width = 7, height = 5)
 
 # pf
 p <- plot.box(weights, sel = "PF") + 
@@ -463,6 +467,7 @@ p <- plot.box(weights, sel = "PF") +
   theme(axis.text.x = element_text(angle = 90, hjust = 1))
 
 ggsave("../results/random.weights.pf.tiff", plot = p, width = 8, height = 5, units = "in", dpi = 300, compression = "lzw")
+ggsave("../results/random.weights.pf.pdf", plot = p, width = 8, height = 5)
 
 
 #-------------------------------------------------------------------------------
@@ -642,6 +647,7 @@ DataPlot <- DataPlot %>%
 
 p <- pData(DataPlot, select = "Rstk(CP)", ylab = "AUC")
 ggsave(filename = paste0("../results/featureSizeAUC_comp.jpeg"), p, width = 12, height = 5, units = "in", dpi = 300)
+ggsave(filename = paste0("../results/featureSizeAUC_comp.pdf"), p, width = 12, height = 5)
 
 
 # auc, Rstk(PF)
@@ -659,6 +665,7 @@ DataPlot <- DataPlot %>%
 
 p <- pData(DataPlot, select = "Rstk(PF)", ylab = "AUC")
 ggsave(filename = paste0("../results/featureSizeAUC_pf.jpeg"), p, width = 12, height = 5, units = "in", dpi = 300)
+ggsave(filename = paste0("../results/featureSizeAUC_pf.pdf"), p, width = 12, height = 5)
 
 # dev, Rstk(CP)
 DataPlot <- plotData(devs)
@@ -675,7 +682,7 @@ DataPlot <- DataPlot %>%
 
 p <- pData(DataPlot, select = "Rstk(CP)", ylab = "Dev")
 ggsave(filename = paste0("../results/featureSizeDev_comp.jpeg"), p, width = 12, height = 5, units = "in", dpi = 300)
-
+ggsave(filename = paste0("../results/featureSizeDev_comp.pdf"), p, width = 12, height = 5)
 
 # dev, Rstk(PF)
 DataPlot <- plotData(devs)
@@ -692,6 +699,7 @@ DataPlot <- DataPlot %>%
 
 p <- pData(DataPlot, select = "Rstk(PF)", ylab = "AUC")
 ggsave(filename = paste0("../results/featureSizeDev_pf.jpeg"), p, width = 12, height = 5, units = "in", dpi = 300)
+ggsave(filename = paste0("../results/featureSizeDev_pf.pdf"), p, width = 12, height = 5)
 
 #-------------------------------------------------------------------------------
 # Evaluate the effects of number of bootstrap, using 1/3 P
@@ -804,9 +812,12 @@ DataPlot <- DataPlot %>%
 
 p <- pData(DataPlot, select = "Rstk(CP)", xlab = "Number of bootstraps", ylab = "")
 ggsave(filename = paste0("../results/bootstrapSizeAUC_cp.jpeg"), p, width = 12, height = 5, units = "in", dpi = 300)
+ggsave(filename = paste0("../results/bootstrapSizeAUC_cp.pdf"), p, width = 12, height = 5)
+
 
 p <- pData(DataPlot, select = "Rstk(PF)", xlab = "Number of bootstraps", ylab = "")
 ggsave(filename = paste0("../results/bootstrapSizeAUC_pf.jpeg"), p, width = 12, height = 5, units = "in", dpi = 300)
+ggsave(filename = paste0("../results/bootstrapSizeAUC_pf.pdf"), p, width = 12, height = 5)
 
 # dev
 DataPlot <- plotData(devs)
@@ -818,9 +829,12 @@ DataPlot <- DataPlot %>%
   mutate(size = factor(size, levels = c("50", "100", "150", "200")))
 p <- pData(DataPlot, select = "Rstk(CP)", xlab = "Number of bootstraps", ylab = "")
 ggsave(filename = paste0("../results/bootstrapSizeDev_cp.jpeg"), p, width = 12, height = 5, units = "in", dpi = 300)
+ggsave(filename = paste0("../results/bootstrapSizeDev_cp.pdf"), p, width = 12, height = 5)
+
 
 p <- pData(DataPlot, select = "Rstk(PF)", xlab = "Number of bootstraps", ylab = "")
 ggsave(filename = paste0("../results/bootstrapSizeDev_pf.jpeg"), p, width = 12, height = 5, units = "in", dpi = 300)
+ggsave(filename = paste0("../results/bootstrapSizeDev_pf.pdf"), p, width = 12, height = 5)
 
 
 #-------------------------------------------------------------------------------
@@ -935,9 +949,14 @@ DataPlot <- DataPlot %>%
 
 p <- pData(DataPlot, select = "Rstk(CP)", xlab = "% tunned parameters", ylab = "AUC")
 ggsave(filename = paste0("../results/fastTuningAUC_cp.jpeg"), p, width = 12, height = 5, units = "in", dpi = 300)
+ggsave(filename = paste0("../results/fastTuningAUC_cp.pdf"), p, width = 12, height = 5)
+
+
 
 p <- pData(DataPlot, select = "Rstk(PF)", xlab = "% tunned parameters", ylab = "AUC")
 ggsave(filename = paste0("../results/fastTuningAUC_pf.jpeg"), p, width = 12, height = 5, units = "in", dpi = 300)
+ggsave(filename = paste0("../results/fastTuningAUC_pf.pdf"), p, width = 12, height = 5)
+
 
 # dev
 DataPlot <- plotData(devs)
@@ -949,9 +968,12 @@ DataPlot <- DataPlot %>%
 
 p <- pData(DataPlot, select = "Rstk(CP)", xlab = "% tunned parameters", ylab = "Deviance")
 ggsave(filename = paste0("../results/fastTuningDev_cp.jpeg"), p, width = 12, height = 5, units = "in", dpi = 300)
+ggsave(filename = paste0("../results/fastTuningDev_cp.pdf"), p, width = 12, height = 5)
+
 
 p <- pData(DataPlot, select = "Rstk(PF)", xlab = "% tunned parameters", ylab = "Deviance")
 ggsave(filename = paste0("../results/fastTuningDev_pf.jpeg"), p, width = 12, height = 5, units = "in", dpi = 300)
+ggsave(filename = paste0("../results/fastTuningDev_pf.pdf"), p, width = 12, height = 5)
 
 #-------------------------------------------------------------------------------
 # Computational complexity
@@ -1083,6 +1105,7 @@ p1 <- ggplot(timeggData, aes(x = x, y = time)) +
   facet_grid( ~ group)
 
 ggsave("../results/Rstk_time.jpeg", plot = p1, width = 7, height = 3, units = "in", dpi = 600)
+ggsave("../results/Rstk_time.pdf", plot = p1, width = 7, height = 3)
 
 #-------------------------------------------------------------------------------
 
